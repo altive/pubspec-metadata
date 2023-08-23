@@ -1,0 +1,33 @@
+name: "Pubspec Metadata"
+description: "Retrieve metadata from pubspec.yaml for Flutter/Dart."
+author: altive
+branding:
+  icon: "file-text"
+  color: "blue"
+inputs:
+  pubspec-file:
+    description: "Path to your pubspec.yaml file. Default is './pubspec.yaml'"
+    required: false
+    default: "./pubspec.yaml"
+outputs:
+  name:
+    description: "Name"
+    value: ${{ steps.retriever.outputs.name }}
+  version-number:
+    description: "Version number"
+    value: ${{ steps.retriever.outputs.version-number }}
+  build-number:
+    description: "Build number"
+    value: ${{ steps.retriever.outputs.build-number }}
+runs:
+  using: "composite"
+  steps:
+    - id: retriever
+      run: |
+        NAME=`cat ${{ inputs.pubspec-file }} | grep -E '^name:' | awk -F'[:]' '{print $2}'| xargs`
+        echo "name=$(echo $NAME)" >> $GITHUB_OUTPUT
+        VERSION=`cat ${{ inputs.pubspec-file }} | grep -E '^version:\s*([^\+]+)' | awk -F'[:+]' '{print $2}'| xargs`
+        echo "version-number=$(echo $VERSION)" >> $GITHUB_OUTPUT
+        BUILD=`cat ${{ inputs.pubspec-file }} | grep -E '^version:\s*([^\+]+)' | awk -F'[:+]' '{print $3}'| xargs`
+        echo "build-number=$(echo $BUILD)" >> $GITHUB_OUTPUT
+      shell: bash

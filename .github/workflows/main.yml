@@ -1,0 +1,32 @@
+name: main
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    name: Test action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Retrieve pubspec metadata
+        id: pubspec
+        uses: ./
+        with:
+          pubspec-file: ./example/pubspec.yaml
+      - uses: nick-fields/assert-action@v1
+        with:
+          expected: example_app
+          actual: ${{ steps.pubspec.outputs.name }}
+      - uses: nick-fields/assert-action@v1
+        with:
+          expected: 2.3.45
+          actual: ${{ steps.pubspec.outputs.version-number }}
+      - uses: nick-fields/assert-action@v1
+        with:
+          expected: 60
+          actual: ${{ steps.pubspec.outputs.build-number }}

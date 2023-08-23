@@ -1,0 +1,16 @@
+name: example_app
+description: Flutter app or dart package.
+publish_to: "none"
+
+version: 2.3.45+60
+
+environment:
+  sdk: ^3.0.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
