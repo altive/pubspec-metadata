@@ -18,15 +18,18 @@ jobs:
         uses: ./
         with:
           pubspec-file: ./example/pubspec.yaml
-      - uses: nick-fields/assert-action@v1
+      - name: Test name
+        uses: nick-fields/assert-action@v1
         with:
           expected: example_app
           actual: ${{ steps.pubspec.outputs.name }}
-      - uses: nick-fields/assert-action@v1
+      - name: Test version-number
+        uses: nick-fields/assert-action@v1
         with:
           expected: 2.3.45
           actual: ${{ steps.pubspec.outputs.version-number }}
-      - uses: nick-fields/assert-action@v1
+      - name: Test build-number
+        uses: nick-fields/assert-action@v1
         with:
           expected: 60
           actual: ${{ steps.pubspec.outputs.build-number }}
