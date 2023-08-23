@@ -8,7 +8,7 @@ pubspec-metadata allows you to get the version and build number separately.
 
 ## Usage
 
-See [action.yml](action.yml)
+See [action.yaml](action.yaml)
 
 ```yaml
 - name: Pubspec Metadata
