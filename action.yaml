@@ -11,13 +11,13 @@ inputs:
     default: "./pubspec.yaml"
 outputs:
   name:
-    description: "Name"
+    description: "The name of the package."
     value: ${{ steps.retriever.outputs.name }}
   version-number:
-    description: "Version number"
+    description: "The version number of the package, which is three numbers separated by a dot, such as 0.2.43."
     value: ${{ steps.retriever.outputs.version-number }}
   build-number:
-    description: "Build number"
+    description: "The build number of the package. The number following the + after the version number."
     value: ${{ steps.retriever.outputs.build-number }}
 runs:
   using: "composite"
@@ -25,9 +25,11 @@ runs:
     - id: retriever
       run: |
         NAME=`cat ${{ inputs.pubspec-file }} | grep -E '^name:' | awk -F'[:]' '{print $2}'| xargs`
-        echo "name=$(echo $NAME)" >> $GITHUB_OUTPUT
         VERSION=`cat ${{ inputs.pubspec-file }} | grep -E '^version:\s*([^\+]+)' | awk -F'[:+]' '{print $2}'| xargs`
-        echo "version-number=$(echo $VERSION)" >> $GITHUB_OUTPUT
         BUILD=`cat ${{ inputs.pubspec-file }} | grep -E '^version:\s*([^\+]+)' | awk -F'[:+]' '{print $3}'| xargs`
-        echo "build-number=$(echo $BUILD)" >> $GITHUB_OUTPUT
+        {
+          echo "name=$(echo "$NAME")"
+          echo "version-number=$(echo "$VERSION")"
+          echo "build-number=$(echo "$BUILD")"
+        } >> "$GITHUB_OUTPUT"
       shell: bash
