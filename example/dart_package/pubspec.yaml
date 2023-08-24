@@ -1,0 +1,14 @@
+name: example_package
+description: Dart package.
+publish_to: "none"
+
+version: 0.10.2
+
+environment:
+  sdk: ^3.0.0
+
+dependencies:
+  meta:
+
+dev_dependencies:
+  test:

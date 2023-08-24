@@ -9,7 +9,18 @@ on:
       - main
 jobs:
   test:
-    name: Test action
+    name: Test pubspec files
+    strategy:
+      matrix:
+        include:
+          - package: "flutter_app"
+            name: "example_app"
+            version: 2.3.45
+            build: 60
+          - package: "dart_package"
+            name: "example_package"
+            version: 0.10.2
+            build: ""
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -17,19 +28,19 @@ jobs:
         id: pubspec
         uses: ./
         with:
-          pubspec-file: ./example/pubspec.yaml
+          pubspec-file: ./example/${{ matrix.package }}/pubspec.yaml
       - name: Test name
         uses: nick-fields/assert-action@v1
         with:
-          expected: example_app
+          expected: ${{ matrix.name }}
           actual: ${{ steps.pubspec.outputs.name }}
       - name: Test version-number
         uses: nick-fields/assert-action@v1
         with:
-          expected: 2.3.45
+          expected: ${{ matrix.version }}
           actual: ${{ steps.pubspec.outputs.version-number }}
       - name: Test build-number
         uses: nick-fields/assert-action@v1
         with:
-          expected: 60
+          expected: ${{ matrix.build }}
           actual: ${{ steps.pubspec.outputs.build-number }}
